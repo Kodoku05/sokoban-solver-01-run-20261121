@@ -3,12 +3,6 @@ import { join } from 'node:path';
 
 const inputDir = process.env.MAKEFUN_INPUT_DIR ?? '/input';
 const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
-const directions = [
-  { delta: 0, letter: 'u' },
-  { delta: 0, letter: 'd' },
-  { delta: -1, letter: 'l' },
-  { delta: 1, letter: 'r' },
-];
 const cap = 2_000_000;
 
 function parse(text) {
@@ -409,10 +403,8 @@ function solveRooms(level, layout, id) {
     const optimal = search(room.floor, level.w, roomGoals, roomBoxes, room.door, room.door, true, cap);
     console.error(`[solver] ${id} room ${i + 1}: A* expanded ${optimal.expanded}/${cap}${optimal.capped ? ' (cap)' : ''}`);
     let answer = optimal;
-    let method = 'A*';
     if (answer.moves === null) {
       answer = search(room.floor, level.w, roomGoals, roomBoxes, room.door, room.door, false, cap);
-      method = 'greedy';
       console.error(`[solver] ${id} room ${i + 1}: greedy expanded ${answer.expanded}/${cap}${answer.capped ? ' (cap)' : ''}`);
     }
     if (answer.moves === null) return null;
